@@ -1,10 +1,8 @@
-import { db } from "../../../config/firebase";
 import { Event } from "../models/Event";
-
-const collection = db.collection("events");
+import * as repo from "../repositories/eventRepository";
 
 export const createEvent = async (data: any): Promise<Event> => {
-  const id = collection.doc().id;
+  const id = `evt_${Math.random().toString().slice(2, 8).padStart(6, "0")}`;
   const now = new Date().toISOString();
 
   const newEvent: Event = {
@@ -19,11 +17,36 @@ export const createEvent = async (data: any): Promise<Event> => {
     updatedAt: now
   };
 
-  await collection.doc(id).set(newEvent);
+  await repo.create(newEvent);
   return newEvent;
 };
 
 export const getAllEvents = async (): Promise<Event[]> => {
-  const snapshot = await collection.get();
-  return snapshot.docs.map(doc => doc.data() as Event);
+  return repo.getAll();
+};
+
+export const getEventById = async (id: string): Promise<Event | null> => {
+  return repo.getById(id);
+};
+
+export const updateEvent = async (id: string, data: any): Promise<Event | null> => {
+  const existing = await repo.getById(id);
+  if (!existing) return null;
+
+  const updated: Event = {
+    ...existing,
+    ...data,
+    updatedAt: new Date().toISOString()
+  };
+
+  await repo.update(id, updated);
+  return updated;
+};
+
+export const deleteEvent = async (id: string): Promise<boolean> => {
+  const existing = await repo.getById(id);
+  if (!existing) return false;
+
+  await repo.remove(id);
+  return true;
 };
