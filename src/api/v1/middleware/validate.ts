@@ -8,7 +8,7 @@ export default function validate(schema: Joi.ObjectSchema) {
     // Validate the request body against the schema
     const { error } = schema.validate(req.body);
 
-    // If there is an error, send a 400 response with the error message
+    // If there is an error, send a response with the error message
     if (error) {
       res.status(400).json({
         message: `Validation error: ${error.details[0].message}`

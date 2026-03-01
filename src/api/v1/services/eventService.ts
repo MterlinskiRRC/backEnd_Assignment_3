@@ -1,9 +1,10 @@
 import { Event } from "../models/Event";
 import * as repo from "../repositories/eventRepository";
+import { randomUUID } from 'crypto';
 
 export const createEvent = async (data: any): Promise<Event> => {
   // Generate a unique ID for the event
-  const id = `evt_${Math.random().toString().slice(2, 8).padStart(6, "0")}`;
+  const id: string = randomUUID();
   // Get the current timestamp
   const now = new Date().toISOString();
 
