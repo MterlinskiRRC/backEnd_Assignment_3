@@ -1,8 +1,8 @@
 import Joi from "joi";
 
 export const createEventSchema = Joi.object({
-  // name is a required string with a minimum length of 3
-  name: Joi.string().min(3).required(),
+  // name is a required string with a minimum length of 3 and a maximum length of 150
+  name: Joi.string().min(3).max(150).required(),
 
   // date is a required ISO date that must be in the future
   date: Joi.date()
