@@ -8,8 +8,7 @@ import {
 } from "../controllers/eventController";
 
 import validate from "../middleware/validate";
-import { createEventSchema } from "../validation/eventValidation";
-import { updateEventSchema } from "../validation/updateEventValidation";
+import { createEventSchema, updateEventSchema } from "../validation/eventValidation";
 import { getHealth } from "../controllers/healthController";
 const router = Router();
 

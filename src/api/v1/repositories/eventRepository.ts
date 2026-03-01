@@ -1,4 +1,4 @@
-import { db } from "../../../../config/firebase";
+import { db } from "../../../../firebase";
 import { Event } from "../models/Event";
 
 const collection = db.collection("events");
@@ -9,7 +9,7 @@ export const create = async (event: Event): Promise<void> => {
 
 export const getAll = async (): Promise<Event[]> => {
   const snapshot = await collection.get();
-  return snapshot.docs.map(doc => doc.data() as Event);
+  return snapshot.docs.map((doc: any) => doc.data() as Event);
 };
 
 export const getById = async (id: string): Promise<Event | null> => {

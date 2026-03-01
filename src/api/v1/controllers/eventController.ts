@@ -13,21 +13,30 @@ export const getAllEvents = async (req: Request, res: Response) => {
 
 export const getEventById = async (req: Request, res: Response) => {
   const event = await service.getEventById(req.params.id);
-  if (!event) return res.status(404).json({ message: "Event not found" });
+  if (!event) {
+    res.status(404).json({ message: "Event not found" });
+    return;
+  }
 
   res.json({ message: "Event retrieved", data: event });
 };
 
 export const updateEvent = async (req: Request, res: Response) => {
   const updated = await service.updateEvent(req.params.id, req.body);
-  if (!updated) return res.status(404).json({ message: "Event not found" });
+  if (!updated) {
+    res.status(404).json({ message: "Event not found" });
+    return;
+  }
 
   res.json({ message: "Event updated", data: updated });
 };
 
 export const deleteEvent = async (req: Request, res: Response) => {
   const deleted = await service.deleteEvent(req.params.id);
-  if (!deleted) return res.status(404).json({ message: "Event not found" });
+  if (!deleted) {
+    res.status(404).json({ message: "Event not found" });
+    return;
+  }
 
   res.json({ message: "Event deleted" });
 };
