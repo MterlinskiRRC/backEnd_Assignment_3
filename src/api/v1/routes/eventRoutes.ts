@@ -9,10 +9,8 @@ import {
 
 import validate from "../middleware/validate";
 import { createEventSchema, updateEventSchema } from "../validation/eventValidation";
-import { getHealth } from "../controllers/healthController";
 const router = Router();
 
-router.get("/health", getHealth);
 router.post("/", validate(createEventSchema), createEvent);
 router.get("/", getAllEvents);
 router.get("/:id", getEventById);
