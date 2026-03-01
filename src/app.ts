@@ -1,4 +1,6 @@
+
 import express from "express";
+
 import eventRoutes from "./api/v1/routes/eventRoutes";
 
 const app = express();

@@ -1,3 +1,4 @@
+// Define the Event interface
 export interface Event {
   id: string;
   name: string;

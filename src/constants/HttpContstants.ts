@@ -1,3 +1,4 @@
+// Define an object to hold HTTP status codes
 export const HTTP_STATUS: {
     OK: number;
     CREATED: number;
