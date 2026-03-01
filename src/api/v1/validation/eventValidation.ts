@@ -35,8 +35,8 @@ export const createEventSchema = Joi.object({
 
 // Define the validation schema for updating an event
 export const updateEventSchema = Joi.object({
-  // name is an optional string with a minimum length of 3
-  name: Joi.string().min(3).optional(),
+  // name is an optional string with a minimum length of 3 and a maximum length of 150
+  name: Joi.string().min(3).max(150).optional(),
   // date is an optional ISO date that must be in the future
   date: Joi.date().iso().greater("now").optional(),
   // capacity is an optional integer with a minimum value of 5
