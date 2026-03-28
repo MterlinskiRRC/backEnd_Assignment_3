@@ -145,6 +145,36 @@ Raw OpenAPI JSON is available at:
 
 `http://localhost:3000/api-docs.json`
 
+## Test and Verify
+
+Run automated tests:
+
+```bash
+npm test
+```
+
+Check Helmet headers:
+
+```bash
+curl -I http://localhost:3000/api/v1/health
+```
+
+Check CORS behavior for an allowed origin:
+
+```bash
+curl -X OPTIONS http://localhost:3000/api/v1/events \
+  -H "Origin: http://localhost:3000" \
+  -H "Access-Control-Request-Method: GET" -i
+```
+
+### Screenshot Checklist
+
+Capture screenshots of:
+
+1. CORS headers in Postman or browser dev tools.
+2. Security headers from Helmet (`X-Frame-Options`, `Strict-Transport-Security`, `Referrer-Policy`).
+3. GitHub Pages hosted API documentation page.
+
 ## Security Notes
 
 See `SECURITY.md` for Helmet.js and CORS configuration details with external-source justifications.
