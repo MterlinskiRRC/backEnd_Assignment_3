@@ -1,16 +1,23 @@
+import "dotenv/config";
 import admin from "firebase-admin";
-import path from "path";
 
-// Get the path to the service account key
-const serviceAccountPath = path.join(__dirname, "serviceAccountKey.json");
+const projectId = process.env.FIREBASE_PROJECT_ID;
+const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
-const serviceAccount = require(serviceAccountPath);
+if (!projectId || !clientEmail || !privateKey) {
+  throw new Error("Missing Firebase environment variables. Check FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.");
+}
 
-// Initialize the firebase admin 
-admin.initializeApp({
-  // Authenticate with the service account
-  credential: admin.credential.cert(serviceAccount)
-});
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId,
+      clientEmail,
+      privateKey
+    })
+  });
+}
 
 // Export the firestore database instance
 export const db = admin.firestore();
