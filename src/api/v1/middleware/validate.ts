@@ -11,7 +11,8 @@ export default function validate(schema: Joi.ObjectSchema) {
     // If there is an error, send a response with the error message
     if (error) {
       res.status(400).json({
-        message: `Validation error: ${error.details[0].message}`
+        message: "Validation error",
+        details: error.details.map((detail) => detail.message)
       });
       return;
     }
