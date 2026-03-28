@@ -42,7 +42,7 @@ helmet({
 6. **xDnsPrefetchControl: { allow: false }**
    - Restricts DNS prefetching behavior and reduces unnecessary outbound lookups from browser contexts.
 
-### External Sources
+### Sources
 
 1. Helmet.js documentation: https://helmetjs.github.io/
 2. OWASP Secure Headers Project: https://owasp.org/www-project-secure-headers/

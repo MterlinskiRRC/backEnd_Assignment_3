@@ -167,13 +167,6 @@ curl -X OPTIONS http://localhost:3000/api/v1/events \
   -H "Access-Control-Request-Method: GET" -i
 ```
 
-### Screenshot Checklist
-
-Capture screenshots of:
-
-1. CORS headers in Postman or browser dev tools.
-2. Security headers from Helmet (`X-Frame-Options`, `Strict-Transport-Security`, `Referrer-Policy`).
-3. GitHub Pages hosted API documentation page.
 
 ## Security Notes
 
