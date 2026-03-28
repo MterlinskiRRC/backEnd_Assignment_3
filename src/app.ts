@@ -2,9 +2,11 @@
 import express from "express";
 import helmet from "helmet";
 import cors, { CorsOptions } from "cors";
+import swaggerUi from "swagger-ui-express";
 
 import eventRoutes from "./api/v1/routes/eventRoutes";
 import healthRoute from "./api/v1/routes/healthRoute";
+import { openApiSpec } from "./config/swagger";
 
 const app = express();
 
@@ -50,6 +52,12 @@ app.use(
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.get("/api-docs.json", (req, res) => {
+	res.json(openApiSpec);
+});
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 app.use("/api/v1", healthRoute);
 app.use("/api/v1/events", eventRoutes);
