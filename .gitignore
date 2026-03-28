@@ -1,5 +1,8 @@
 node_modules/
 dist/
 serviceAccountKey.json
+.env
+.env.*
+!.env.example
 Terlinski_backEndAissgnment3_Screenshots.pdf
 Terlinski_Assignment3.mp4
