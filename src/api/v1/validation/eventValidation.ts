@@ -1,5 +1,64 @@
 import Joi from "joi";
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     CreateEventRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *         - date
+ *         - capacity
+ *       properties:
+ *         name:
+ *           type: string
+ *           minLength: 3
+ *           maxLength: 150
+ *           example: Tech Conference 2027
+ *         date:
+ *           type: string
+ *           format: date-time
+ *           example: 2027-10-15T10:00:00.000Z
+ *         capacity:
+ *           type: integer
+ *           minimum: 5
+ *           example: 150
+ *         registrationCount:
+ *           type: integer
+ *           minimum: 0
+ *           example: 50
+ *         status:
+ *           type: string
+ *           enum: [active, cancelled, completed]
+ *           example: active
+ *         category:
+ *           type: string
+ *           enum: [conference, workshop, meetup, seminar, general]
+ *           example: conference
+ *     UpdateEventRequest:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           minLength: 3
+ *           maxLength: 150
+ *         date:
+ *           type: string
+ *           format: date-time
+ *         capacity:
+ *           type: integer
+ *           minimum: 5
+ *         registrationCount:
+ *           type: integer
+ *           minimum: 0
+ *         status:
+ *           type: string
+ *           enum: [active, cancelled, completed]
+ *         category:
+ *           type: string
+ *           enum: [conference, workshop, meetup, seminar, general]
+ */
 export const createEventSchema = Joi.object({
   // name is a required string with a minimum length of 3 and a maximum length of 150
   name: Joi.string().min(3).max(150).required(),
