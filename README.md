@@ -1,19 +1,36 @@
-# Events API
+# Events API - Module 5 Backend Assignment
+# Helmet, CORS, Swagger and Pages
 
-## Project Overview
+## Author
+- Update with your name
 
-Events API is a backend service for creating, reading, updating, and deleting event records. It provides a clear REST interface with request validation and structured JSON responses, making it suitable for web or mobile clients that need event lifecycle management.
+## Student ID
+- Update with your student ID
 
-This project solves the need for a simple but secure event-management API with built-in documentation. It is intended for developers integrating event features into applications and for teams that need maintainable API contracts through OpenAPI.
+# Information
+- A fully typed, test-driven, Firestore-backend REST API built with:
+  - Node.js
+  - Express
+  - TypeScript
+  - Joi validation
+  - Jest
+- This project implements CRUD operations for event management, including validation, service abstraction, repository patterns, and automated testing.
+- Includes Helmet, CORS, Swagger, and GitHub Pages.
 
-## Installation Instructions
+### Project Overview
 
-### Prerequisites
+- This API provides a complete event-management backend designed for creating, retrieving, updating, and deleting event records. It is built using Node.js, Express, TypeScript, and Firestore, with a strong focus on security, validation, and documentation. The API includes request validation using Joi, secure HTTP headers via Helmet, environment-based CORS configuration, and documented endpoints using OpenAPI/Swagger.
+- The goal of this project is to demonstrate industry-standard backend practices, including modular architecture, validation middleware, automated documentation generation, and public deployment of API docs.
 
-- Node.js 20+ (recommended)
-- npm 10+
+### Installation Instructions
 
-### Setup Steps
+## Prerequisites
+
+- Node.js v20+
+- npm v10+
+- A Firebase project with Firestore enabled
+- Firebase service account credentials
+- Git
 
 1. Clone the repository:
 
@@ -28,126 +45,123 @@ cd Assignment3
 npm install
 ```
 
-3. Create your environment file from the example:
+3. Environment variables:
 
-```bash
-cp .env.example .env
+- Create a `.env` file in the project root (or copy from `.env.example` if present) and set:
+
+```env
+NODE_ENV=development
+PORT=3000
+
+FIREBASE_PROJECT_ID=your-firebase-project-id
+FIREBASE_CLIENT_EMAIL=your-firebase-client-email
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+
+CORS_ALLOWED_ORIGINS=http://localhost:3000,https://your-github-pages-url
+
+API_DOCS_TITLE=Events API Documentation
+API_DOCS_VERSION=1.0.0
+SWAGGER_SERVER_URL=http://localhost:3000/api/v1
 ```
 
-4. Update `.env` with your Firebase credentials and CORS origins.
-
-5. Start the server:
+4. Start the server:
 
 ```bash
 npm start
 ```
 
-The API runs on `http://localhost:3000` unless `PORT` is set.
+- API is available at:
+  - `http://localhost:3000/api/v1`
 
-## API Request Examples
+### API Requests
 
-### 1) Health Check
-
-**Request:**
-
-```bash
-curl -X GET http://localhost:3000/api/v1/health
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "status": "OK",
-  "uptime": 12.45,
-  "timestamp": "2026-03-28T12:00:00.000Z",
-  "version": "1.0.0"
-}
-```
-
-### 2) Create Event
-
-**Request:**
+- Create an Event:
 
 ```bash
 curl -X POST http://localhost:3000/api/v1/events \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Tech Conference 2027",
-    "date": "2027-10-15T10:00:00.000Z",
-    "capacity": 200,
-    "registrationCount": 30,
+    "name": "Tech Conference",
+    "date": "2026-06-01T10:00:00Z",
+    "capacity": 100,
+    "registrationCount": 0,
     "status": "active",
     "category": "conference"
   }'
 ```
 
-**Response (201 Created):**
-
 ```json
 {
   "message": "Event created successfully",
   "data": {
-    "id": "c1ce8f7d-54d7-4a65-a560-f3f31fe3fd9f",
-    "name": "Tech Conference 2027",
-    "date": "2027-10-15T10:00:00.000Z",
-    "capacity": 200,
-    "registrationCount": 30,
+    "id": "auto-generated-firestore-id",
+    "name": "Tech Conference",
+    "date": "2026-06-01T10:00:00Z",
+    "capacity": 100,
+    "registrationCount": 0,
     "status": "active",
-    "category": "conference",
-    "createdAt": "2026-03-28T12:00:00.000Z",
-    "updatedAt": "2026-03-28T12:00:00.000Z"
+    "category": "conference"
   }
 }
 ```
 
-### 3) Update Event
-
-**Request:**
+- Get All Events:
 
 ```bash
-curl -X PUT http://localhost:3000/api/v1/events/c1ce8f7d-54d7-4a65-a560-f3f31fe3fd9f \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Updated Tech Conference",
-    "capacity": 250
-  }'
+curl -X GET http://localhost:3000/api/v1/events
 ```
 
-**Response (200 OK):**
+```json
+{
+  "message": "Events retrieved",
+  "data": []
+}
+```
+
+- Update an Event:
+
+```bash
+curl -X PUT http://localhost:3000/api/v1/events/<event-id> \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Conference",
+    "capacity": 150
+  }'
+```
 
 ```json
 {
   "message": "Event updated",
   "data": {
-    "id": "c1ce8f7d-54d7-4a65-a560-f3f31fe3fd9f",
-    "name": "Updated Tech Conference",
-    "capacity": 250
+    "id": "<event-id>",
+    "name": "Updated Conference",
+    "capacity": 150
   }
 }
 ```
 
-## Link to Public Documentation
+### Documentation
 
-Full API documentation is available at:
+5. Link to full public documentation:
 
-`https://yourusername.github.io/your-repo/`
+https://MterlinskiRRC.github.io/backEnd_Assignment_3/
 
-Replace this URL with your actual GitHub Pages URL after deployment.
+6. Local documentation access:
 
-## Local Documentation Access
+- Swagger UI:
+  - `http://localhost:3000/api-docs`
+- OpenAPI JSON:
+  - `http://localhost:3000/api-docs.json`
 
-When running locally, access Swagger UI at:
+7. Generate static docs for GitHub Pages:
 
-`http://localhost:3000/api-docs`
+```bash
+npm run generate-docs
+```
 
-Raw OpenAPI JSON is available at:
+### Test and Verify
 
-`http://localhost:3000/api-docs.json`
-
-## Test and Verify
-
-Run automated tests:
+Run tests:
 
 ```bash
 npm test
@@ -159,7 +173,7 @@ Check Helmet headers:
 curl -I http://localhost:3000/api/v1/health
 ```
 
-Check CORS behavior for an allowed origin:
+Check CORS behavior:
 
 ```bash
 curl -X OPTIONS http://localhost:3000/api/v1/events \
@@ -167,7 +181,6 @@ curl -X OPTIONS http://localhost:3000/api/v1/events \
   -H "Access-Control-Request-Method: GET" -i
 ```
 
-
 ## Security Notes
 
-See `SECURITY.md` for Helmet.js and CORS configuration details with external-source justifications.
+See `SECURITY.md` for Helmet and CORS configuration details.

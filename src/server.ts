@@ -1,8 +1,8 @@
-import "dotenv/config";
 import app from "./app";
 
-const PORT: number = Number(process.env.PORT) || 3000;
+// Use environment variables from app.ts where dotenv is loaded
+const PORT: string | number = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

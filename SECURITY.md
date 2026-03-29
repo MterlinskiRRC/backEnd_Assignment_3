@@ -55,38 +55,40 @@ helmet({
 
 ```typescript
 cors({
-  origin(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error("Origin not allowed by CORS"));
-  },
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  origin: allowedOrigins.length > 0 ? allowedOrigins : false,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: false,
   maxAge: 600
 })
 ```
 
+With environment-aware configuration:
+- **Development:** `origin: true` (all origins allowed for easy testing)
+- **Production:** `origin: allowedOrigins` (trusted origins from `CORS_ALLOWED_ORIGINS` env variable)
+
 ### What Was Configured and Why
 
-1. **Origin allowlist (from env)**
-   - Allows only trusted origins rather than any origin (`*`).
-   - Supports environment-specific policies (development vs production).
+1. **Environment-based Origin allowlist**
+   - Development: All origins allowed for testing flexibility.
+   - Production: Only configured trusted origins accepted, preventing unauthorized access.
+   - Loaded from `CORS_ALLOWED_ORIGINS` environment variable (comma-separated list).
 
 2. **Explicit methods list**
-   - Restricts cross-origin calls to required API methods only.
+   - Restricts cross-origin calls to required HTTP methods only (GET, POST, PUT, DELETE, OPTIONS).
+   - Prevents unnecessary PATCH requests from untrusted origins.
 
 3. **allowedHeaders list**
-   - Limits accepted request headers to expected API usage.
+   - Limits accepted request headers to `Content-Type` and `Authorization`.
+   - Reduces attack surface by rejecting unexpected headers.
 
-4. **credentials: false**
-   - Prevents browser credential sharing across origins when not required.
+4. **credentials: true**
+   - Allows credentials (cookies, authorization headers) in cross-origin requests when needed.
+   - Properly configures trust between frontend and API.
 
 5. **maxAge: 600**
-   - Caches preflight responses for 10 minutes to reduce repeated preflight traffic while keeping policy refresh reasonably quick.
-
-6. **Allow requests without Origin header**
-   - Supports server-to-server tools (curl/Postman) that may not include `Origin`.
+   - Caches CORS preflight responses for 10 minutes to reduce repeated OPTIONS requests.
+   - Balances performance with reasonable policy refresh frequency.
 
 ### External Sources
 

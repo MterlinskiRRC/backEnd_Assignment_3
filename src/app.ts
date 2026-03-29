@@ -1,64 +1,38 @@
+import dotenv from "dotenv";
 
-import express from "express";
-import helmet from "helmet";
-import cors, { CorsOptions } from "cors";
-import swaggerUi from "swagger-ui-express";
+// Load environment variables BEFORE internal imports
+dotenv.config();
+
+import express, { Express } from "express";
+import cors from "cors";
+import setupSwagger from "./config/swagger";
+import { getHelmetConfig } from "./config/helmetConfig";
+import { getCorsOptions } from "./config/corsConfig";
+import { generateSwaggerSpec } from "./config/swaggerOptions";
 
 import eventRoutes from "./api/v1/routes/eventRoutes";
 import healthRoute from "./api/v1/routes/healthRoute";
-import { openApiSpec } from "./config/swagger";
 
-const app = express();
+const app: Express = express();
 
-const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? "http://localhost:3000")
-	.split(",")
-	.map((origin) => origin.trim())
-	.filter(Boolean);
+// Apply Helmet security middleware
+app.use(getHelmetConfig());
 
-const corsOptions: CorsOptions = {
-	origin(origin, callback) {
-		if (!origin) {
-			callback(null, true);
-			return;
-		}
+// Apply CORS middleware
+app.use(cors(getCorsOptions()));
 
-		if (allowedOrigins.includes(origin)) {
-			callback(null, true);
-			return;
-		}
-
-		callback(new Error("Origin not allowed by CORS"));
-	},
-	methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-	allowedHeaders: ["Content-Type", "Authorization"],
-	credentials: false,
-	maxAge: 600
-};
-
-app.use(
-	helmet({
-		contentSecurityPolicy: false,
-		crossOriginEmbedderPolicy: false,
-		frameguard: { action: "deny" },
-		hsts: {
-			maxAge: 31536000,
-			includeSubDomains: true,
-			preload: false
-		},
-		referrerPolicy: { policy: "no-referrer" },
-		xDnsPrefetchControl: { allow: false }
-	})
-);
-
-app.use(cors(corsOptions));
+// Parse JSON request bodies
 app.use(express.json());
 
+// Serve OpenAPI specification as JSON
 app.get("/api-docs.json", (req, res) => {
-	res.json(openApiSpec);
+	res.json(generateSwaggerSpec());
 });
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
+// Setup Swagger UI documentation
+setupSwagger(app);
 
+// Routes
 app.use("/api/v1", healthRoute);
 app.use("/api/v1/events", eventRoutes);
 

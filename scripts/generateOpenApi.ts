@@ -1,14 +1,11 @@
-import "dotenv/config";
 import fs from "fs";
 import path from "path";
-import { openApiSpec } from "../src/config/swagger";
+import { generateSwaggerSpec } from "../src/config/swaggerOptions";
 
-const docsDir = path.resolve(process.cwd(), "docs");
-const outputPath = path.join(docsDir, "openapi.json");
+const specs = generateSwaggerSpec();
 
-if (!fs.existsSync(docsDir)) {
-  fs.mkdirSync(docsDir, { recursive: true });
-}
+const outputPath = path.resolve(__dirname, "../docs/openapi.json");
 
-fs.writeFileSync(outputPath, JSON.stringify(openApiSpec, null, 2), "utf-8");
-console.log(`OpenAPI spec generated at ${outputPath}`);
+fs.writeFileSync(outputPath, JSON.stringify(specs, null, 2));
+
+console.log("OpenAPI specification generated successfully!");
