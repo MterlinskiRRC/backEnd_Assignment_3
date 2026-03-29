@@ -1,2 +1,10 @@
 node_modules/
 dist/
+serviceAccountKey.json
+.env
+.env.*
+!.env.example
+Terlinski_backEndAissgnment3_Screenshots.pdf
+Terlinski_Assignment3.mp4
+Terlinski_Assignmen_5.mp4
+Terlinski-Module-5-Screenshots.pdf

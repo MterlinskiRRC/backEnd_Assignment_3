@@ -1,13 +1,11 @@
-import { greet, add } from "../src/server";
+import app from "../src/app";
 
-describe("Server Functions", () => {
-    test("should return greeting message", () => {
-        const result = greet("World"); // Place breakpoint here for debugging
-        expect(result).toBe("Hello, World");
+describe("Express App", () => {
+    test("app should be defined", () => {
+        expect(app).toBeDefined();
     });
 
-    test("should add two numbers", () => {
-        const result = add(5, 3); // Place breakpoint here for debugging
-        expect(result).toBe(8);
+    test("app should be an Express application", () => {
+        expect(typeof app).toBe("function");
     });
 });
